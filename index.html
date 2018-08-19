@@ -1,0 +1,160 @@
+<html>
+<head>
+    <title>
+        Tic Tac Toe
+    </title>
+    <style>
+        table{
+            display: table;
+            border-collapse: separate;
+            border-spacing: 2px;
+            border-width: thick;
+            border-color: gray;
+        }
+        td{
+           background-color: #b5dcb3;
+           height: 50px;
+           width: 50px;
+           text-align: center;
+        }
+        input{
+           background-color: #b5dcb3;
+           height: 50px;
+           width: 50px;
+           text-align: center;
+           font-size: 20px;
+           font-style: oblique;
+        }
+
+    </style>
+
+    <script>
+        var arr=[];
+        var count=0;
+        var grid=[-1,-2,-3,-4,-5,-6,-7,-8,-9];
+        var mem=[]
+        var max_count=0;
+        function undo()
+        {
+            if(count>=0)
+            {
+            var temp=arr[count-1];
+            document.getElementById(temp).value="";
+            count--;
+            }
+        }
+        function redo()
+        {
+            if(count<max_count)
+            {
+                if(count%2==0)
+                document.getElementById(arr[count]).value="X";
+                else {
+                    document.getElementById(arr[count]).value="O";
+                }
+                count++;
+                var temp=arr[count-1];
+                grid[temp-1]=(count-1)%2;
+            }
+        }
+        function gameOver()
+        {
+            if(grid[0]==grid[1]&&grid[0]==grid[2])
+            return true;
+            else if(grid[2]==grid[5]&&grid[5]==grid[8])
+            return true;
+            else if(grid[0]==grid[3]&&grid[3]==grid[6])
+            return true;
+            else if(grid[6]==grid[7]&&grid[7]==grid[8])
+            return true;
+            else if(grid[3]==grid[4]&&grid[4]==grid[5])
+            return true;
+            else if(grid[0]==grid[4]&&grid[4]==grid[8])
+            return true;
+            else if(grid[2]==grid[4]&&grid[4]==grid[6])
+            return true;
+            else if(grid[1]==grid[4]&&grid[7]==grid[4])
+            return true;
+            else
+            return false;
+        }
+        function loadGame()
+        {
+            var ele=document.activeElement;
+            if(arr.indexOf(ele.id)==-1)
+            {
+                arr.push(ele.id);
+                if(count%2==0)
+                {
+                    document.getElementById(ele.id).value="X";
+                    grid[ele.id-1]=1;
+                    count++;
+                    max_count++;
+                }
+                else
+                {
+                    document.getElementById(ele.id).value="O";
+                    grid[ele.id-1]=2;
+                    count++;
+                    max_count++;
+                }
+                if(gameOver())
+                {
+                    arr=[];
+                    grid=[-1,-2,-3,-4,-5,-6,-7,-8,-9];
+                    document.getElementById("lbl").innerHTML="User "+document.getElementById(ele.id).value+" won the Game";
+                    document.getElementById("lb2").innerHTML="Game starts after 5 seconds";
+                    count=0;
+                    for(var i=0;i<9;i++)
+                        document.getElementById(i+1).value="";
+                    setTimeout("location.reload(true);",5000);
+                }
+                else if(count==9)
+                {
+                    arr=[];
+                    grid=[-1,-2,-3,-4,-5,-6,-7,-8,-9];
+                    document.getElementById("lbl").value.innerHTML="Match Draw";
+                    count=0;
+                    for(var i=0;i<9;i++)
+                        document.getElementById(i+1).value="";
+                    setTimeout("location.reload(true);",5000);
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <center>
+    <h1>New Game</h1>
+    <table>
+        <tr>
+            <td><input type="button" id="1" value="" onclick="loadGame()"></td>
+            <td><input type="button" id="2" value="" onclick="loadGame()"></td>
+            <td><input type="button" id="3" value="" onclick="loadGame()"></td>
+        </tr>
+        <tr>
+            <td><input type="button" id="4" value="" onclick="loadGame()"></td>
+            <td><input type="button" id="5" value="" onclick="loadGame()"></td>
+            <td><input type="button" id="6" value="" onclick="loadGame()"></td>
+        </tr7>
+        <tr>
+            <td><input type="button" id="7" value="" onclick="loadGame()"></td>
+            <td><input type="button" id="8" value="" onclick="loadGame()"></td>
+            <td><input type="button" id="9" value="" onclick="loadGame()"></td>
+        </tr>
+    </table>
+    <br><br><br>
+    <input type="button" style="color:white;background-color:#175963;height:30px;width:90px" id="bt" value="undo" onclick="undo()">
+    
+    <input type="button" style="color:white;background-color:#175963;height:30px;width:90px" id="bt" value="redo" onclick="redo()">
+    <br><br><br>
+    <label id="lbl" value="">
+    </label>
+    <br><br>
+    <label id="lb2" value="">
+    </label>
+</center>
+<br/><br/><br/><br/>
+<b>Created by Madhusudan Chowdary</b>
+</body>
+</html>
